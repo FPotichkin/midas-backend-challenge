@@ -26,3 +26,8 @@ export const getSpecie = async (urlArray: string[]) =>{
         return specie[0].id
     }  
 }
+
+export const getSpecieByName =async (name: string) => {
+    const species = await repository.getByName(name)
+    return species
+}
