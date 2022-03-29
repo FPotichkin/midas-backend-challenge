@@ -8,7 +8,8 @@
     "start": "nodemon",
     "lint": "eslint . --ext .ts",
     "db-up": "docker-compose up -d",
-    "migrations:run": "npx sequelize-cli db:migrate"
+    "migrations:run": "npx sequelize-cli db:migrate",
+    "seeders:run": "npx sequelize-cli db:seed:all"
   },
   "repository": {
     "type": "git",
