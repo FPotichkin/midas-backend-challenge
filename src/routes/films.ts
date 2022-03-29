@@ -178,6 +178,8 @@ const router = express.Router()
  *                   $ref: '#/components/schemas/FilmWithCharacters'
  *       400:
  *         $ref: '#/components/responses/BadRequest'
+ *       404:
+ *         $ref: '#/components/responses/NotFound'
  *       500:
  *         $ref: '#/components/responses/InternalServerError'              
  */

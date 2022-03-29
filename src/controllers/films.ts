@@ -30,10 +30,14 @@ const getAllByTitle = async (title: string) => {
 }
 
 export const getById = async (req: Request, res:Response, next:NextFunction) =>{
-    const film = await services.getById(Number(req.params.id))
-    res.json({
-        data: film
-    })
+    try {
+        const film = await services.getById(Number(req.params.id))
+        res.json({
+            data: film
+        })
+    } catch (err: any) {
+        next(err)
+    }
 }
 
 export const removeCharactersByFilm = async (req: Request, res:Response, next:NextFunction) =>{
