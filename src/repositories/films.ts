@@ -82,7 +82,5 @@ export const truncate = async () => {
 }
 
 export const update =  async (id: number, charactersToDate: boolean) =>{
-    console.log('I update')
-    const updated = await db.Films.update({charactersToDate: charactersToDate}, {where:{id}})
-    console.log(updated)
+    await db.Films.update({charactersToDate: charactersToDate}, {where:{id}})
 }
