@@ -183,4 +183,40 @@ const router = express.Router()
  */
  router.get('/:id', filmsController.getById)
 
+/**
+ * @swagger
+ * /films/{id}/characters:
+ *   delete:
+ *     security:
+ *       - bearerAuth: []
+ *     tags:
+ *       - films
+ *     summary: Delete all characters from a film.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: Film id.
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Confirmation.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 msg:
+ *                   type: string
+ *                   example: Deleted Succesfully 
+ *       400:
+ *         $ref: '#/components/responses/BadRequest'
+ *       401:
+ *         $ref: '#/components/responses/Unauthorized'
+ *       500:
+ *         $ref: '#/components/responses/InternalServerError'              
+ */
+ router.delete('/:id/characters', filmsController.removeCharactersByFilm)
+
  export default router

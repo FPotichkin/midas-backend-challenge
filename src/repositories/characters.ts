@@ -11,3 +11,11 @@ export const getByName = async (name: string) => {
     const character = await db.Characters.findOne({ where: { name } })
     return character   
 }
+
+export const remove = async (id: number) => {
+    await db.Characters.destroy({
+        where:{
+            id
+        }
+    })
+}

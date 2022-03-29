@@ -80,3 +80,15 @@ export const getById = async (id: number)=>{
     }
     return film
 }
+
+export const removeCharactersByFilm = async (id: number)=>{
+    if(isNaN(id)){
+        throw new AppError( 'Id must by a number', 400, 'In films Services, removeCharactersByFilm')
+    }
+    const film: internalFilmDetails = await repository.getById(id)
+    if(!film){
+        const error: AppError = new AppError(`Film with id ${id} not found`, 404, 'In films Services, removeCharactersByFilm');
+        throw error;
+    }
+    await charactersService.removeCharactersByFilm(id)
+}

@@ -35,3 +35,14 @@ export const getById = async (req: Request, res:Response, next:NextFunction) =>{
         data: film
     })
 }
+
+export const removeCharactersByFilm = async (req: Request, res:Response, next:NextFunction) =>{
+    try {
+        await services.removeCharactersByFilm(Number(req.params.id))
+        res.json({
+            msg: 'Deleted succesfully'
+        })
+    } catch (err) {
+        next(err)
+    }
+}
