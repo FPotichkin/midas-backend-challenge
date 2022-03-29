@@ -1,5 +1,6 @@
 import express from 'express'
 import * as filmsController from '../controllers/films'
+import { isAuth } from '../middlewares/isAuth'
 
 
 const router = express.Router()
@@ -219,6 +220,6 @@ const router = express.Router()
  *       500:
  *         $ref: '#/components/responses/InternalServerError'              
  */
- router.delete('/:id/characters', filmsController.removeCharactersByFilm)
+ router.delete('/:id/characters', isAuth, filmsController.removeCharactersByFilm)
 
  export default router

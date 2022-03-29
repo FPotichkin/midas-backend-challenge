@@ -1,5 +1,6 @@
 import express from 'express'
 import * as managerController from '../controllers/management'
+import { isAuth } from '../middlewares/isAuth'
 
 const router = express.Router()
 
@@ -33,6 +34,6 @@ const router = express.Router()
  *          
  *                     
  */
-router.delete('/cleardb', managerController.clearDb)
+router.delete('/cleardb', isAuth, managerController.clearDb)
 
 export default router
