@@ -8,7 +8,8 @@ interface FilmAttributes {
   producer: string;
   title: string;
   release_date: Date;
-  external_url: string
+  external_url: string;
+  charactersToDate: boolean;
 }
 module.exports = (sequelize: any, DataTypes: any) => {
   class Film extends Model<FilmAttributes> implements FilmAttributes {
@@ -23,6 +24,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
     title!: string;
     release_date!: Date;
     external_url!: string;
+    charactersToDate!: boolean;
 
     static associate(models: any) {
       // define association here
@@ -58,6 +60,10 @@ module.exports = (sequelize: any, DataTypes: any) => {
         },
         external_url:{
           type: DataTypes.STRING,
+          allowNull: false
+        },
+        charactersToDate:{
+          type: DataTypes.BOOLEAN,
           allowNull: false
         }
       }, {

@@ -14,17 +14,17 @@ export const create = async (filmsList: object[])=>{
 }
 
 export const getAll = async ()=>{
-    const filmsList = await db.Films.findAll( {
-        include: [{
-            model: db.Characters,
-            attributes: [
-                "id",
-                "name",
-            ],
-            through:{
-                attributes: []
-            },
-        }]
+    const filmsList = await db.Films.findAll({
+        attributes:[
+            'id',
+            'director',
+            'producer',
+            'title',
+            'release_date',
+            'external_url',
+            'createdAt',
+            'updatedAt'
+        ]
     })
     return filmsList
 }
@@ -79,4 +79,10 @@ export const truncate = async () => {
         truncate: true,
         cascade: true
     })
+}
+
+export const update =  async (id: number, charactersToDate: boolean) =>{
+    console.log('I update')
+    const updated = await db.Films.update({charactersToDate: charactersToDate}, {where:{id}})
+    console.log(updated)
 }

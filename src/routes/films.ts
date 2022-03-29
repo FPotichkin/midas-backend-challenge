@@ -33,17 +33,6 @@ const router = express.Router()
  *         external_url:
  *           type: string
  *           example: https://swapi.dev/api/films/1/
- *         Characters: 
- *           type: array
- *           items:
- *             type: object
- *             properties:
- *               id:
- *                 type: integer
- *                 example: 1
- *               name:
- *                 type: string
- *                 example: R2-D2
  *     FilmWithCharacters:
  *       type: object
  *       properties:
@@ -151,7 +140,7 @@ const router = express.Router()
  *       - in: query
  *         name: title
  *         required: false
- *         description: Film title.
+ *         description: Film title (case sensitive).
  *         schema:
  *           type: string
  *     responses:

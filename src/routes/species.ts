@@ -34,7 +34,7 @@ const router = express.Router()
  *       - in: query
  *         name: name
  *         required: true
- *         description: Specie name.
+ *         description: Specie name (case sensitive).
  *         schema:
  *           type: string
  *     responses:

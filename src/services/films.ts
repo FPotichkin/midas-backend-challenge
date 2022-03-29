@@ -40,6 +40,7 @@ interface internalFilmDetails extends filmDetails {
     id: number;
     external_url: string;
     Characters: Character[];
+    charactersToDate: boolean;
 }
 
 interface DataValues{
@@ -68,16 +69,13 @@ export const getAll = async ()=>{
                 director: film.director,
                 producer: film.producer,
                 release_date: film.release_date,
-                external_url: film.url
+                external_url: film.url,
+                charactersToDate: false
             }
         })
         // then create them in our db
         await repository.create(externalfilmsList)
-        // then we create the characters
-        for (const urls of charactersUrls) {
-            await charactersService.getExternalCharacters(urls)
-        }
-        // then we get them with all the data
+
         filmsList = await repository.getAll()
     }
     //Finally we return the films
@@ -101,12 +99,13 @@ export const getById = async (id: number)=>{
         throw error;
     }
     // if there are not characters we request them from the external API
-    if(film.Characters.length === 0){
+    if(!film.charactersToDate){
         const resp = await axios.get(film.external_url)  
         const externalFilm: externalfilmDetails = resp.data 
         if(externalFilm.characters){
             await charactersService.getExternalCharacters(externalFilm.characters)
         }
+        await repository.update(id, true)
         film = await repository.getById(id)
     }
     // here we add the ids of all the films where a character appear
@@ -131,6 +130,7 @@ export const removeCharactersByFilm = async (id: number)=>{
         throw error;
     }
     await charactersService.removeCharactersByFilm(id)
+    await repository.update(id, false)
 }
 
 export const getFilmsIds = async (urlsList: string[]): Promise<number[]>=>{
