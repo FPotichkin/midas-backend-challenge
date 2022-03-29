@@ -28,3 +28,27 @@ export const getByTitle =async (title: string) => {
     })
     return films
 }
+
+export const getById = async (id: number)=> {
+    const film = await db.Films.findByPk(id, {
+        include: [{
+            model: db.Characters,
+            attributes: [
+                "id",
+                "name",
+                "gender",
+            ],
+            through:{
+                attributes: []
+            },
+            include: [{
+                model: db.Species, as:'Species',
+                attributes: [
+                    "id",
+                    "name"
+                ]
+            }]
+        }]
+    })   
+    return film
+}

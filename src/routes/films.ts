@@ -152,6 +152,35 @@ const router = express.Router()
 
  router.get('/', filmsController.getAll)
 
-
+/**
+ * @swagger
+ * /films/{id}:
+ *   get:
+ *     tags:
+ *       - films
+ *     summary: Retrieve a film.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: Film id.
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Film detail.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   $ref: '#/components/schemas/FilmWithCharacters'
+ *       400:
+ *         $ref: '#/components/responses/BadRequest'
+ *       500:
+ *         $ref: '#/components/responses/InternalServerError'              
+ */
+ router.get('/:id', filmsController.getById)
 
  export default router

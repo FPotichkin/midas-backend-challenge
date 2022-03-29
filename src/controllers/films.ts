@@ -28,3 +28,10 @@ const getAllByTitle = async (title: string) => {
     const filmsList = await services.getByTitle(title)
     return filmsList
 }
+
+export const getById = async (req: Request, res:Response, next:NextFunction) =>{
+    const film = await services.getById(Number(req.params.id))
+    res.json({
+        data: film
+    })
+}

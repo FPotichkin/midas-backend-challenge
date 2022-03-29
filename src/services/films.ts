@@ -1,5 +1,7 @@
 import axios from "axios"
+import { AppError } from "../errorManagement/AppErrors";
 import * as repository from '../repositories/films'
+import * as charactersService from '../services/characters'
 
 interface filmDetails{
     title: string;
@@ -50,7 +52,31 @@ export const getAll = async ()=>{
     //Finally we return the films
     return filmsList
 }
+
 export const getByTitle =async (title: string) => {
     const films: internalFilmDetails[] = await repository.getByTitle(title)
     return films
+}
+
+export const getById = async (id: number)=>{
+    // validate id
+    if(isNaN(id)){
+        throw new AppError( 'Id must by a number', 400, 'In films Services, getById')
+    }
+    // first we look in the db
+    let film:internalFilmDetails = await repository.getById(id)
+    if(!film){
+        const error: AppError = new AppError(`Film with id ${id} not found`, 404, 'In films Services, getById');
+        throw error;
+    }
+    // if there are not films we request them from the external API
+    if(film.Characters.length === 0){
+        const resp = await axios.get(film.external_url)  
+        const externalFilm: externalfilmDetails = resp.data 
+        if(externalFilm.characters){
+            await charactersService.getExternalCharacters(externalFilm.characters, id)
+        }
+        film = await repository.getById(id)
+    }
+    return film
 }
