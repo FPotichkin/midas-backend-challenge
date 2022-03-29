@@ -1,8 +1,10 @@
 import {Request, Response, NextFunction} from 'express'
+import { performance } from 'perf_hooks'
 import { AppError } from '../errorManagement/AppErrors'
 import * as services from '../services/films'
 
 export const getAll = async (req: Request, res:Response, next:NextFunction) =>{
+    const t1 = performance.now()
     try{
         let filmsList
         if(!req.query.title){
@@ -13,9 +15,12 @@ export const getAll = async (req: Request, res:Response, next:NextFunction) =>{
             }
             filmsList = await getAllByTitle(req.query.title)
         }
+        const t2 = performance.now()
+        console.log('The performance is' + (t2-t1))
         res.json({
             data: filmsList
         })
+
     }catch(err){
         next(err)
     }
@@ -25,7 +30,7 @@ const getAllByTitle = async (title: string) => {
     if(!title){
         throw new AppError('Title needed', 400, 'In films Controller, getByTitle')
     }
-    const filmsList = await services.getByTitle(title)
+    const filmsList = await services.searchAllByTitle(title)
     return filmsList
 }
 

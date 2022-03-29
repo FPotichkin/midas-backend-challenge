@@ -14,11 +14,22 @@ export const create = async (filmsList: object[])=>{
 }
 
 export const getAll = async ()=>{
-    const filmsList: object[] = await db.Films.findAll()
+    const filmsList = await db.Films.findAll( {
+        include: [{
+            model: db.Characters,
+            attributes: [
+                "id",
+                "name",
+            ],
+            through:{
+                attributes: []
+            },
+        }]
+    })
     return filmsList
 }
 
-export const getByTitle =async (title: string) => {
+export const searchAllByTitle =async (title: string) => {
     const films = await db.Films.findAll({
         where:{
             title:{
@@ -27,6 +38,15 @@ export const getByTitle =async (title: string) => {
         }
     })
     return films
+}
+
+export const getByTitle =async (title: string) => {
+    const [film] = await db.Films.findAll({
+        where:{
+            title
+        }
+    })
+    return film.dataValues
 }
 
 export const getById = async (id: number)=> {
@@ -41,13 +61,14 @@ export const getById = async (id: number)=> {
             through:{
                 attributes: []
             },
-            include: [{
-                model: db.Species, as:'Species',
-                attributes: [
-                    "id",
-                    "name"
-                ]
-            }]
+            include: [
+                {
+                    model: db.Species, as:'Species',
+                    attributes: [
+                        "id",
+                        "name"
+                ]}
+            ],
         }]
     })   
     return film
