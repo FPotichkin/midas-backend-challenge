@@ -19,3 +19,10 @@ export const remove = async (id: number) => {
         }
     })
 }
+
+export const truncate = async () => {
+    await db.Characters.destroy({
+        truncate: true,
+        cascade: true
+    })
+}

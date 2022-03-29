@@ -20,3 +20,10 @@ export const getByName = async (name: string)=> {
     });
     return specie
 }
+
+export const truncate = async () => {
+    await db.Species.destroy({
+        truncate: true,
+        cascade: true
+    })
+}

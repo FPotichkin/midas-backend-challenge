@@ -39,3 +39,9 @@ export const remove = async (filmId: number) => {
         }
     })
 }
+
+export const truncate = async () => {
+    await db.Films_Characters.destroy({
+        truncate: true
+    })
+}

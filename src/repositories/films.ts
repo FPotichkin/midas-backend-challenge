@@ -52,3 +52,10 @@ export const getById = async (id: number)=> {
     })   
     return film
 }
+
+export const truncate = async () => {
+    await db.Films.destroy({
+        truncate: true,
+        cascade: true
+    })
+}
