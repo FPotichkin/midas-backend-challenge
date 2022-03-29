@@ -50,3 +50,7 @@ export const getAll = async ()=>{
     //Finally we return the films
     return filmsList
 }
+export const getByTitle =async (title: string) => {
+    const films: internalFilmDetails[] = await repository.getByTitle(title)
+    return films
+}
