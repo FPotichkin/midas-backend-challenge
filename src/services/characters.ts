@@ -1,13 +1,16 @@
 import axios from "axios"
+import { getFilmsIds } from "./films"
 import * as repository from '../repositories/characters'
 import * as filmsCharactersRepository from '../repositories/films-characters'
+import * as filmsCharatersServices from './films-characters'
 import { getSpecie } from './species'
 
-interface character {
+interface Character {
     id?: number;
     name: string;
     gender: string;
     species: string[];
+    films: string[]
 }
 export interface internalCharacter{
     id?: number;
@@ -26,44 +29,49 @@ interface FilmCharacters{
 
 }
 
-export const getExternalCharacters = async (urlsList: string[], filmId:number) => {  
-    const characters: character[] = [];
+export const getExternalCharacters = async (urlsList: string[]) => {  
+    const characters: Character[] = [];
     // first we get the characters from the external api
     const promises: Promise<void>[] = urlsList.map( async (url) => {
         return(
             axios.get(url)
             .then((resp)=>{
-                let character: character = resp.data
+                let character: Character = resp.data
                 character = formatCharacter(character)
         
                 characters.push(character)
             })
-    
         )
     });
 
     await Promise.all(promises)
 
     for (let index = 0; index < characters.length; index++) {
-        // then we look for theirs species
-        const specieId = await getSpecie(characters[index].species)
-        const modelCharacter: internalCharacter = {
-            name: characters[index].name,
-            gender: characters[index].gender,
-            species_id: specieId,
-        }
         // here we check if the characters already exist, if not we create it
-        const characterExist = await repository.getByName(modelCharacter.name)
-        if(!characterExist){
-            // here is created and associated to the film
+        const characterInDb = await repository.getByName(characters[index].name)
+        // then look their films
+        const filmsIds: number[] = await getFilmsIds(characters[index].films)
+        if(!characterInDb){
+            // then we look for theirs species
+            const specieId = await getSpecie(characters[index].species)
+            const modelCharacter: internalCharacter = {
+                name: characters[index].name,
+                gender: characters[index].gender,
+                species_id: specieId,
+            } 
             const newCharacter = await repository.create(modelCharacter)
-            await filmsCharactersRepository.create(filmId, newCharacter.id)
+            for (const filmId of filmsIds) {
+                await filmsCharatersServices.create(filmId, newCharacter.id)
+            }
         }else{
-            // it already exist so we only associate it to the film
-            await filmsCharactersRepository.create(filmId, characterExist.id)
-        }    
+            for (const filmId of filmsIds) {
+                await filmsCharatersServices.create(filmId, characterInDb.id)
+            }
+        }
     }
 }
+
+
 
 export const removeCharactersByFilm = async (filmId: number) => {
 
@@ -91,11 +99,12 @@ export const removeCharactersByFilm = async (filmId: number) => {
 
 }
 
-const formatCharacter = (character: character)=>{
-    const formatedCharacter: character = {
+const formatCharacter = (character: Character)=>{
+    const formatedCharacter: Character = {
         name : character.name,
         species: character.species,
-        gender: character.gender
+        gender: character.gender,
+        films: character.films
     }
     return formatedCharacter
 }

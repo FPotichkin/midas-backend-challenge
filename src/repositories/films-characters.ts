@@ -32,6 +32,16 @@ export const getAllByCharacter = async (characterId: number) =>{
     return characterFilms
 }
 
+export const getByIds = async (films_id: number, characters_id: number) => {
+    const filmCharacter = await db.Films_Characters.findOne({
+        where:{
+            films_id,
+            characters_id
+        }
+    })
+    return filmCharacter
+}
+
 export const remove = async (filmId: number) => {
     await db.Films_Characters.destroy({
         where:{

@@ -19,7 +19,6 @@ module.exports = (sequelize: any, DataTypes: any) => {
     films_id!: number;
     characters_id!: number;
     static associate(models: any) {
-      // define association here
     }
   }
   FilmsCharacters.init({

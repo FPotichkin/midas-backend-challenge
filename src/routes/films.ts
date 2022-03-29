@@ -33,6 +33,17 @@ const router = express.Router()
  *         external_url:
  *           type: string
  *           example: https://swapi.dev/api/films/1/
+ *         Characters: 
+ *           type: array
+ *           items:
+ *             type: object
+ *             properties:
+ *               id:
+ *                 type: integer
+ *                 example: 1
+ *               name:
+ *                 type: string
+ *                 example: R2-D2
  *     FilmWithCharacters:
  *       type: object
  *       properties:
@@ -45,6 +56,9 @@ const router = express.Router()
  *         director:
  *           type: string
  *           example: George Lucas
+ *         producer:
+ *            type: string
+ *            example: Gary Kurtz, Rick McCallum
  *         createdAt:
  *           type: string
  *           example: 2022-02-07T11:05:33.000Z
@@ -67,7 +81,7 @@ const router = express.Router()
  *                      example: 1
  *                  gender: 
  *                      type: string
- *                      example: male
+ *                      example: n/a
  *                  Species: 
  *                      type: object
  *                      properties:
@@ -77,6 +91,11 @@ const router = express.Router()
  *                          name: 
  *                              type: string
  *                              example: Droid
+ *                  filmsId:
+ *                      type: array 
+ *                      items: 
+ *                          type: integer
+ *                          example: 1    
  *                          
  *   responses:
  *     BadRequest:

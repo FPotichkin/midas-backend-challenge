@@ -9,14 +9,10 @@ export const isAuth = (req: Request, res: Response, next: NextFunction)=>{
         const authorization = req.headers.authorization
 
         if(!authorization){
-
             const error = new AppError('Token needed', 401, '')
             next(error)
-
         }else{
-            
             const [,token] = authorization.split(' ')
-            console.log(token)
             jwt.verify(token, secret)
             next()
         }
