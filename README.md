@@ -1,5 +1,8 @@
 # Midas Node Backend Challenge
 
+## Documentation
+Once you already installed the enviroment and started the server you can see de documentation in localhost:8000/api/docs/
+
 ##  Enviroment setup
 
 1. Create a .env file and copy .env.example to .env and fill with database credentials.
